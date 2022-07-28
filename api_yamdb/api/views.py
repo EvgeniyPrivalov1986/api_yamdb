@@ -1,8 +1,9 @@
-from rest_framework import filters,viewsets
+from rest_framework import filters, viewsets
 
-from reviews.models import Category
+from reviews.models import Category, Genre
+
 from .permissions import IsAdminOrReadOnly
-from .serializers import CategorySerializer
+from .serializers import CategorySerializer, GenreSerializer
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -12,3 +13,10 @@ class CategoryViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter,)
     search_fields = ("name",)
 
+
+class GenreViewSet(viewsets.ModelViewSet):
+    queryset = Genre.objects.all()
+    serializer_class = GenreSerializer
+    permission_classes = (IsAdminOrReadOnly,)
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ("name",)

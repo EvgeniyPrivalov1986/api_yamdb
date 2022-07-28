@@ -1,19 +1,19 @@
-# import pytest
+import pytest
 
-# from .common import auth_client, create_genre, create_users_api
+from .common import auth_client, create_genre, create_users_api
 
 
-# class Test03GenreAPI:
+class Test03GenreAPI:
 
-#     @pytest.mark.django_db(transaction=True)
-#     def test_01_genre_not_auth(self, client):
-#         response = client.get('/api/v1/genres/')
-#         assert response.status_code != 404, (
-#             'Страница `/api/v1/genres/` не найдена, проверьте этот адрес в *urls.py*'
-#         )
-#         assert response.status_code == 200, (
-#             'Проверьте, что при GET запросе `/api/v1/genres/` без токена авторизации возвращается статус 200'
-#         )
+    @pytest.mark.django_db(transaction=True)
+    def test_01_genre_not_auth(self, client):
+        response = client.get('/api/v1/genres/')
+        assert response.status_code != 404, (
+            'Страница `/api/v1/genres/` не найдена, проверьте этот адрес в *urls.py*'
+        )
+        assert response.status_code == 200, (
+            'Проверьте, что при GET запросе `/api/v1/genres/` без токена авторизации возвращается статус 200'
+        )
 
 #     @pytest.mark.django_db(transaction=True)
 #     def test_02_genre(self, admin_client):

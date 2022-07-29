@@ -5,7 +5,7 @@ from rest_framework import filters
 #from rest_framework.pagination import LimitOffsetPagination
 from reviews.models import Review, Comment, User
 from api.serializers import CommentSerializer, ReviewSerializer
-#from api.permissions import AuthorOrReadOnly
+from api.permissions import AuthorOrReadOnly
 
 
 class ReviewViewSet(viewsets.ModelViewSet):
@@ -15,4 +15,4 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
 class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
-    
+    permission_classes = (AuthorOrReadOnly,)

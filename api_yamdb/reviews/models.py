@@ -3,7 +3,22 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+
 class Review(models.Model):
+
+    SCORE_CHOICES = (
+        (1, '1. Очень плохо.'),
+        (2, '2. Плохо.'),
+        (3, '3. Не очень.'),
+        (4, '4. Так себе.'),
+        (5, '5. Ни то, ни сё.'),
+        (6, '6. Неплохо.'),
+        (7, '7. Хорошо.'),
+        (8, '8. Очень хорошо.'),
+        (9, '9. Великолепно.'),
+        (10, '10. Высший балл.'),
+    )
+
     text = models.TextField(
         verbose_name='Текст отзыва',
         help_text='Введите текст отзыва'
@@ -27,7 +42,9 @@ class Review(models.Model):
         verbose_name='Автор',
         null=True,
     )
-    score = models.IntegerField()
+    score = models.IntegerField(
+        choices=SCORE_CHOICES,
+    )
 
     def __str__(self) -> str:
         return self.text[:20]
@@ -60,3 +77,4 @@ class Comment(models.Model):
 
     def __str__(self) -> str:
         return self.text[:20]
+

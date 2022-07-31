@@ -19,7 +19,7 @@ from .models import User
 
 
 class APISignUp(APIView):
-    """Регистрация пользователя"""
+    """Регистрация пользователя."""
     permission_classes = (AllowAny, )
 
     @staticmethod
@@ -47,7 +47,7 @@ class APISignUp(APIView):
 
 
 class APIToken(APIView):
-    """Выдача токена"""
+    """Выдача токена."""
     permission_classes = (AllowAny, )
 
     def post(self, request):
@@ -66,7 +66,7 @@ class APIToken(APIView):
 
 
 class APIUser(APIView):
-    """Изменение своих данных"""
+    """Изменение своих данных."""
     def get(self, request, *args, **kwargs):
         user = get_object_or_404(User, username=request.user.username)
         serializer = ForUserSerializer(user, many=False)
@@ -84,7 +84,7 @@ class APIUser(APIView):
 
 
 class UserViewSetForAdmin(ModelViewSet):
-    """Работа с пользователями для администратора"""
+    """Работа с пользователями для администратора."""
     queryset = User.objects.all()
     serializer_class = ForAdminSerializer
     lookup_field = 'username'

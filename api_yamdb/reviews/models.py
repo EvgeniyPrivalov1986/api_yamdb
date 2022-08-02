@@ -33,7 +33,7 @@ class Genre(models.Model):
         return self.name[:15]
 
 
-class Title:
+class Title(models.Model):
     name = models.CharField(
         verbose_name='Произведения, к которым пишут отзывы',
         max_length=300,

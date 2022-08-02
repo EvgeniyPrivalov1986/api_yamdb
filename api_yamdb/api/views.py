@@ -28,6 +28,12 @@ class GenreViewSet(viewsets.ModelViewSet):
 
 class TitleViewSet(viewsets.ModelViewSet):
     queryset = Title.objects.all()
+<<<<<<< HEAD
+=======
+    # queryset = Title.objects.annotate(
+    #     Avg('reviews__score')
+    # )
+>>>>>>> a8f2fb5545104a7ad4275b3484c4e68749ce98d4
     serializer_class = TitleSerializer
     permission_classes = (IsAdminOrReadOnly,)
     filter_backends = (DjangoFilterBackend,)

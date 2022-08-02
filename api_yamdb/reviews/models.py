@@ -64,6 +64,6 @@ class Title(models.Model):
     def __str__(self):
         return self.name[:15]
 
-    # class Meta:
-    #     verbose_name = 'Произведение'
-    #     verbose_name_plural = 'Произведения'
+    class Meta:
+        verbose_name = 'Произведение'
+        verbose_name_plural = 'Произведения'

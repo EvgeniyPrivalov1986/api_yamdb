@@ -40,7 +40,7 @@ class Title(models.Model):
     )
     year = models.IntegerField(
         verbose_name='Дата публикации',
-        validators=[validate_year,],
+        validators=[validate_year],
     )
     genre = models.ManyToManyField(
         'Genre',

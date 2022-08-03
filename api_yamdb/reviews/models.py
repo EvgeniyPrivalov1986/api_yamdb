@@ -34,31 +34,62 @@ class Genre(models.Model):
 
 
 class Title(models.Model):
+    # name = models.CharField(
+    #     verbose_name='Произведения, к которым пишут отзывы',
+    #     max_length=300,
+    # )
+    # year = models.IntegerField(
+    #     verbose_name='Дата публикации',
+    #     validators=[validate_year],
+    # )
+    # genre = models.ManyToManyField(
+    #     Genre,
+    #     verbose_name='Жанр',
+    #     related_name='titles',
+    # )
+    # category = models.ForeignKey(
+    #     Category,
+    #     verbose_name='Категория',
+    #     on_delete=models.SET_NULL,
+    #     related_name='titles',
+    #     blank=True,
+    #     null=True,
+    # )
+    # description = models.TextField(
+    #     verbose_name='Описание',
+    #     blank=True,
+    #     null=True,
+    # )
     name = models.CharField(
-        verbose_name='Произведения, к которым пишут отзывы',
-        max_length=300,
+        verbose_name='Название',
+        max_length=200
     )
     year = models.IntegerField(
-        verbose_name='Дата публикации',
-        validators=[validate_year],
-    )
-    genre = models.ManyToManyField(
-        'Genre',
-        verbose_name='Жанр',
-        related_name='titles',
-    )
-    category = models.ForeignKey(
-        'Category',
-        verbose_name='Категория',
-        on_delete=models.SET_NULL,
-        related_name='titles',
-        blank=True,
-        null=True,
+        verbose_name='Дата выхода',
+        validators=[validate_year]
     )
     description = models.TextField(
         verbose_name='Описание',
-        blank=True,
         null=True,
+        blank=True
+    )
+    genre = models.ManyToManyField(
+        Genre,
+        verbose_name='Жанр',
+        related_name='titles'
+        # through='GenreTitle'
+    )
+    category = models.ForeignKey(
+        Category,
+        verbose_name='Категория',
+        on_delete=models.SET_NULL,
+        related_name='titles',
+        null=True
+    )
+    rating = models.IntegerField(
+        verbose_name='Рейтинг',
+        null=True,
+        default=None
     )
 
     def __str__(self):
@@ -67,3 +98,17 @@ class Title(models.Model):
     class Meta:
         verbose_name = 'Произведение'
         verbose_name_plural = 'Произведения'
+
+
+# class GenreTitle(models.Model):
+#     title = models.ForeignKey(
+#         Title,
+#         verbose_name='Произведение',
+#         on_delete=models.CASCADE)
+#     genre = models.ForeignKey(
+#         Genre,
+#         verbose_name='Жанр',
+#         on_delete=models.CASCADE)
+
+#     def __str__(self):
+#         return f'{self.title}, жанр - {self.genre}'

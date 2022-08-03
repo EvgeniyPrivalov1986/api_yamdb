@@ -29,7 +29,7 @@ class TitleSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
-        model = Title,
+        model = Title
         fields = '__all__'
 
 
@@ -41,10 +41,10 @@ class ReadTitleSerializer(serializers.ModelSerializer):
     genre = GenreSerializer(
         read_only=True,
     )
-    # rating = serializers.IntegerField(
-    #     source='reviews__score__avg',
-    #     read_only=True,
-    # )
+    rating = serializers.IntegerField(
+        # source='reviews__score__avg',
+        read_only=True,
+    )
 
     class Meta:
         model = Title

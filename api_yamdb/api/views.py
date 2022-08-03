@@ -1,16 +1,17 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets
+from rest_framework import filters, viewsets
 from rest_framework import permissions
-from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Avg
 from reviews.models import Review, Title, User
 from reviews.models import Category, Genre, Title
 from api.serializers import CommentSerializer, ReviewSerializer
-from .serializers import CategorySerializer, GenreSerializer, TitleSerializer, ReadTitleSerializer
 from api.permissions import AuthorOrAdminOrReadOnly
 from .permissions import IsAdminOrReadOnly
 from .firters import TitlesFilter
-
+from .mixins import ListCreateDestroyGenericViewSet
+from .serializers import (CategorySerializer, GenreSerializer,
+                          ReadTitleSerializer, TitleSerializer)
 
 
 
@@ -28,7 +29,6 @@ class ReviewViewSet(viewsets.ModelViewSet):
         serializer.save(author=self.request.user, title=title)
 
 
-
 class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
     permission_classes = (AuthorOrAdminOrReadOnly,)
@@ -43,27 +43,33 @@ class CommentViewSet(viewsets.ModelViewSet):
         serializer.save(author=self.request.user, review=review)
 
 
-class CategoryViewSet(viewsets.ModelViewSet):
+class CategoryViewSet(ListCreateDestroyGenericViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = (IsAdminOrReadOnly,)
     filter_backends = (filters.SearchFilter,)
     search_fields = ("name",)
+    lookup_field = "slug"
 
 
-class GenreViewSet(viewsets.ModelViewSet):
+class GenreViewSet(ListCreateDestroyGenericViewSet):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
     permission_classes = (IsAdminOrReadOnly,)
     filter_backends = (filters.SearchFilter,)
     search_fields = ("name",)
+    lookup_field = "slug"
 
 
 class TitleViewSet(viewsets.ModelViewSet):
+
     queryset = Title.objects.all()
     # queryset = Title.objects.annotate(
     #     Avg('reviews__score')
     # )
+    # queryset = Title.objects.all().annotate(
+    #     Avg("reviews__score")
+    # ).order_by("name")
     serializer_class = TitleSerializer
     permission_classes = (IsAdminOrReadOnly,)
     filter_backends = (DjangoFilterBackend,)

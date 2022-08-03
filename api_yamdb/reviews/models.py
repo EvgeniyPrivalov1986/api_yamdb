@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from .validators import validate_year
 
 User = get_user_model()
 
@@ -78,10 +79,6 @@ class Comment(models.Model):
     def __str__(self) -> str:
         return self.text[:20]
 
-<<<<<<< HEAD
-=======
-from .validators import validate_year
-
 
 class Category(models.Model):
     name = models.CharField(
@@ -147,4 +144,3 @@ class Title(models.Model):
     class Meta:
         verbose_name = 'Произведение'
         verbose_name_plural = 'Произведения'
->>>>>>> 769e7c58af779b7c6afd7cad73bbd7e86a034749

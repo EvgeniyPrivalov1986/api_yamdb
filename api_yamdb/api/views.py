@@ -2,7 +2,6 @@ from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from rest_framework import permissions
 from rest_framework import filters
-#from rest_framework.pagination import LimitOffsetPagination
 from django.db.models import Avg
 from reviews.models import Review, Title, User
 from reviews.models import Category, Genre, Title
@@ -12,7 +11,7 @@ from api.permissions import AuthorOrAdminOrReadOnly
 from .permissions import IsAdminOrReadOnly
 from .firters import TitlesFilter
 
-from django_filters.rest_framework import DjangoFilterBackend
+
 
 
 class ReviewViewSet(viewsets.ModelViewSet):
@@ -42,8 +41,6 @@ class CommentViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         review = get_object_or_404(Review, id=self.kwargs.get("review_id"))
         serializer.save(author=self.request.user, review=review)
-
-
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -76,4 +73,3 @@ class TitleViewSet(viewsets.ModelViewSet):
         if self.request.method == 'GET':
             return ReadTitleSerializer
         return TitleSerializer
->>>>>>> 769e7c58af779b7c6afd7cad73bbd7e86a034749

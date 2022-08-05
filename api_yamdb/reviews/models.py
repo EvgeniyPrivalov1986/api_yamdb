@@ -121,6 +121,16 @@ class Review(models.Model):
     def __str__(self) -> str:
         return self.text[:20]
 
+    class Meta:
+        ordering = ['-pub_date']
+        constraints = [
+            models.UniqueConstraint(
+                fields=['author', 'title'],
+                name='only_one_review'
+            )
+        ]
+
+
 class Comment(models.Model):
     review = models.ForeignKey(
         Review,

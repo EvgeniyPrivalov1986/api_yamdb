@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from reviews.models import Review, Comment
 from reviews.models import Category, Genre, Title
+from django.shortcuts import get_object_or_404
 
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -14,11 +15,16 @@ class ReviewSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def validate(self, data):
-        title = int(data['title'])
-        author = self.context['request'].user
-        if Review.objects.filter(title=title, author=author).exists():
+        request = self.context['request']
+        author = request.user
+        title_id = self.context.get('view').kwargs.get('title_id')
+        title = get_object_or_404(Title, pk=title_id)
+        if (
+            request.method == 'POST'
+            and Review.objects.filter(title=title, author=author).exists()
+        ):
             raise serializers.ValidationError(
-                'Вы уже оставляли отзыв к этому произведению.'
+                'Вы уже оставляли отзыв к этому произведению!'
             )
         return data
 
@@ -47,6 +53,10 @@ class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
         exclude = ('id',)
+        lookup_field = 'slug'
+        extra_kwargs = {
+            'url': {'lookup_field': 'slug'}
+        }
 
 
 class TitleSerializer(serializers.ModelSerializer):
@@ -57,7 +67,7 @@ class TitleSerializer(serializers.ModelSerializer):
     genre = serializers.SlugRelatedField(
         slug_field='slug',
         queryset=Genre.objects.all(),
-        many=True
+        many=True,
     )
 
     class Meta:
@@ -68,10 +78,10 @@ class TitleSerializer(serializers.ModelSerializer):
 class ReadTitleSerializer(serializers.ModelSerializer):
     category = CategorySerializer(
         read_only=True,
-
     )
     genre = GenreSerializer(
         read_only=True,
+        many=True,
     )
     rating = serializers.IntegerField(
         # source='reviews__score__avg',

@@ -1,5 +1,4 @@
-from django.conf import settings
-from rest_framework import serializers, exceptions
+from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
 from .models import User
@@ -52,13 +51,13 @@ class ForAdminSerializer(serializers.ModelSerializer):
         model = User
         fields = (
             'username', 'email', 'first_name', 'last_name', 'bio', 'role'
-        )        
+        )
 
 
 class TokenSerializer(serializers.Serializer):
     """Сериализатор для Token. Зарезервированное имя использовать нельзя."""
     username = serializers.CharField(
-        max_length=200, 
+        max_length=200,
         required=True,
         validators=[
             validate_username,

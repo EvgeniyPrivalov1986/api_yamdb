@@ -19,6 +19,10 @@ class Category(models.Model):
     def __str__(self) -> str:
         return self.name[:15]
 
+    class Meta:
+        verbose_name = 'Категория'
+        ordering = ['name']
+
 
 class Genre(models.Model):
     name = models.CharField(
@@ -33,6 +37,10 @@ class Genre(models.Model):
 
     def __str__(self) -> str:
         return self.name[:15]
+
+    class Meta:
+        verbose_name = 'Жанр'
+        ordering = ['name']
 
 
 class Title(models.Model):
@@ -73,7 +81,7 @@ class Title(models.Model):
 
     class Meta:
         verbose_name = 'Произведение'
-        verbose_name_plural = 'Произведения'
+        # ordering = ['name']
 
 
 class Review(models.Model):
@@ -159,3 +167,7 @@ class Comment(models.Model):
 
     def __str__(self) -> str:
         return self.text[:20]
+
+    class Meta:
+        verbose_name = 'Комментарий'
+        ordering = ['pub_date']

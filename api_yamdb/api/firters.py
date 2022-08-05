@@ -21,7 +21,6 @@ class TitlesFilter(filters.FilterSet):
         lookup_expr='icontains'
     )
 
-
     class Meta:
         model = Title
         fields = '__all__'

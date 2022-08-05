@@ -1,18 +1,16 @@
-from django.shortcuts import get_object_or_404
-from rest_framework import filters, viewsets
-from rest_framework import permissions
-from django_filters.rest_framework import DjangoFilterBackend
-from django.db.models import Avg
-from reviews.models import Review, Title, User
-from reviews.models import Category, Genre, Title
-from api.serializers import CommentSerializer, ReviewSerializer
 from api.permissions import AuthorOrAdminOrReadOnly
-from .permissions import IsAdminOrReadOnly
+from api.serializers import CommentSerializer, ReviewSerializer
+from django.db.models import Avg
+from django.shortcuts import get_object_or_404
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters, viewsets
+
+from reviews.models import Category, Genre, Review, Title
 from .firters import TitlesFilter
 from .mixins import ListCreateDestroyGenericViewSet
+from .permissions import IsAdminOrReadOnly
 from .serializers import (CategorySerializer, GenreSerializer,
                           ReadTitleSerializer, TitleSerializer)
-
 
 
 class ReviewViewSet(viewsets.ModelViewSet):
@@ -63,13 +61,9 @@ class GenreViewSet(ListCreateDestroyGenericViewSet):
 
 class TitleViewSet(viewsets.ModelViewSet):
 
-    #queryset = Title.objects.all()
-    queryset = Title.objects.annotate(
-        Avg('reviews__score')
-    )
-    # queryset = Title.objects.all().annotate(
-    #     Avg("reviews__score")
-    # ).order_by("name")
+    queryset = Title.objects.all().annotate(
+        Avg("reviews__score")
+    ).order_by("name")
     serializer_class = TitleSerializer
     permission_classes = (IsAdminOrReadOnly,)
     filter_backends = (DjangoFilterBackend,)

@@ -13,7 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class ForUserSerializer(serializers.ModelSerializer):
-    """Сериализатор для User. Зарезервированное имя использовать нельзя"""
+    """Сериализатор для User. Зарезервированное имя использовать нельзя."""
     email = serializers.EmailField(
         validators=[UniqueValidator(queryset=User.objects.all())]
     )
@@ -35,7 +35,7 @@ class ForUserSerializer(serializers.ModelSerializer):
 
 
 class ForAdminSerializer(serializers.ModelSerializer):
-    """Сериализатор для Admin. Зарезервированное имя использовать нельзя"""
+    """Сериализатор для Admin. Зарезервированное имя использовать нельзя."""
     email = serializers.EmailField(
         validators=[UniqueValidator(queryset=User.objects.all())])
     username = serializers.CharField(

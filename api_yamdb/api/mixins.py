@@ -7,4 +7,5 @@ class ListCreateDestroyGenericViewSet(
     mixins.DestroyModelMixin,
     viewsets.GenericViewSet,
 ):
+    """Пермишн позволяющий совершать не SELF_METHODS."""
     pass

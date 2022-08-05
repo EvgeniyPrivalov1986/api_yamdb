@@ -6,6 +6,7 @@ User = get_user_model()
 
 
 class Category(models.Model):
+    """Модель категории произведений."""
     name = models.CharField(
         verbose_name='Категории (типы) произведений',
         max_length=256,
@@ -25,6 +26,7 @@ class Category(models.Model):
 
 
 class Genre(models.Model):
+    """Модель жанра произведений."""
     name = models.CharField(
         verbose_name='Категории жанров',
         max_length=256,
@@ -44,7 +46,7 @@ class Genre(models.Model):
 
 
 class Title(models.Model):
-
+    """Модель произведений."""
     name = models.CharField(
         verbose_name='Название',
         max_length=300
@@ -81,11 +83,10 @@ class Title(models.Model):
 
     class Meta:
         verbose_name = 'Произведение'
-        # ordering = ['name']
 
 
 class Review(models.Model):
-
+    """Модель отзыва на произведение."""
     SCORE_CHOICES = (
         (1, '1. Очень плохо.'),
         (2, '2. Плохо.'),
@@ -140,6 +141,7 @@ class Review(models.Model):
 
 
 class Comment(models.Model):
+    """Модель комментария на произведение."""
     review = models.ForeignKey(
         Review,
         on_delete=models.CASCADE,

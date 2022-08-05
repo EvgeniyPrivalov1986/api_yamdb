@@ -1,11 +1,11 @@
-from api.permissions import AuthorOrAdminOrReadOnly
-from api.serializers import CommentSerializer, ReviewSerializer
 from django.db.models import Avg
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, viewsets
 
 from reviews.models import Category, Genre, Review, Title
+from api.permissions import AuthorOrAdminOrReadOnly
+from api.serializers import CommentSerializer, ReviewSerializer
 from .firters import TitlesFilter
 from .mixins import ListCreateDestroyGenericViewSet
 from .permissions import IsAdminOrReadOnly
@@ -14,6 +14,7 @@ from .serializers import (CategorySerializer, GenreSerializer,
 
 
 class ReviewViewSet(viewsets.ModelViewSet):
+    """Viewset для создания и получения отзыва."""
     serializer_class = ReviewSerializer
     permission_classes = (AuthorOrAdminOrReadOnly,)
 
@@ -28,6 +29,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
 
 class CommentViewSet(viewsets.ModelViewSet):
+    """Viewset для создания и получения комментария."""
     serializer_class = CommentSerializer
     permission_classes = (AuthorOrAdminOrReadOnly,)
 
@@ -42,6 +44,7 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 
 class CategoryViewSet(ListCreateDestroyGenericViewSet):
+    """Viewset для создания, получения и удаления категории."""
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = (IsAdminOrReadOnly,)
@@ -51,6 +54,7 @@ class CategoryViewSet(ListCreateDestroyGenericViewSet):
 
 
 class GenreViewSet(ListCreateDestroyGenericViewSet):
+    """Viewset для создания, получения и удаления жанра."""
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
     permission_classes = (IsAdminOrReadOnly,)
@@ -60,7 +64,7 @@ class GenreViewSet(ListCreateDestroyGenericViewSet):
 
 
 class TitleViewSet(viewsets.ModelViewSet):
-
+    """Viewset для создания, получения и удаления произведения."""
     queryset = Title.objects.all().annotate(
         Avg("reviews__score")
     ).order_by("name")

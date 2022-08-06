@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 from .validators import validate_year
 
@@ -85,19 +86,6 @@ class Title(models.Model):
 
 class Review(models.Model):
     """Модель отзыва на произведение."""
-    SCORE_CHOICES = (
-        (1, '1. Очень плохо.'),
-        (2, '2. Плохо.'),
-        (3, '3. Не очень.'),
-        (4, '4. Так себе.'),
-        (5, '5. Ни то, ни сё.'),
-        (6, '6. Неплохо.'),
-        (7, '7. Хорошо.'),
-        (8, '8. Очень хорошо.'),
-        (9, '9. Великолепно.'),
-        (10, '10. Высший балл.'),
-    )
-
     text = models.TextField(
         verbose_name='Текст отзыва',
         help_text='Введите текст отзыва'
@@ -122,7 +110,12 @@ class Review(models.Model):
         blank=False, null=True,
     )
     score = models.IntegerField(
-        choices=SCORE_CHOICES,
+        'Оценка',
+        validators=[
+            MinValueValidator(1),
+            MaxValueValidator(10)
+        ],
+        help_text='Введдите оценку'
     )
 
     class Meta:

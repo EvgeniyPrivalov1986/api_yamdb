@@ -1,8 +1,11 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+
 from .validators import validate_year
 
 User = get_user_model()
+
+NUM_OF_LETTERS = 15
 
 
 class Category(models.Model):
@@ -17,12 +20,12 @@ class Category(models.Model):
         unique=True,
     )
 
-    def __str__(self) -> str:
-        return self.name[:15]
-
     class Meta:
         verbose_name = 'Категория'
         ordering = ['name']
+
+    def __str__(self) -> str:
+        return self.name[:NUM_OF_LETTERS]
 
 
 class Genre(models.Model):
@@ -37,12 +40,12 @@ class Genre(models.Model):
         unique=True,
     )
 
-    def __str__(self) -> str:
-        return self.name[:15]
-
     class Meta:
         verbose_name = 'Жанр'
         ordering = ['name']
+
+    def __str__(self) -> str:
+        return self.name[:NUM_OF_LETTERS]
 
 
 class Title(models.Model):
@@ -72,17 +75,12 @@ class Title(models.Model):
         related_name='titles',
         null=True
     )
-    rating = models.IntegerField(
-        verbose_name='Рейтинг',
-        null=True,
-        default=None
-    )
-
-    def __str__(self):
-        return self.name[:15]
 
     class Meta:
         verbose_name = 'Произведение'
+
+    def __str__(self):
+        return self.name[:NUM_OF_LETTERS]
 
 
 class Review(models.Model):
@@ -113,7 +111,7 @@ class Review(models.Model):
         on_delete=models.CASCADE,
         related_name='reviews',
         verbose_name='Отзыв',
-        blank=True, null=True,
+        blank=False, null=True,
         help_text='Произведение, к которому относится комментарий',
     )
     author = models.ForeignKey(
@@ -121,14 +119,11 @@ class Review(models.Model):
         on_delete=models.CASCADE,
         related_name='reviews',
         verbose_name='Автор',
-        null=True,
+        blank=False, null=True,
     )
     score = models.IntegerField(
         choices=SCORE_CHOICES,
     )
-
-    def __str__(self) -> str:
-        return self.text[:20]
 
     class Meta:
         ordering = ['-pub_date']
@@ -139,6 +134,9 @@ class Review(models.Model):
             )
         ]
 
+    def __str__(self) -> str:
+        return self.text[:NUM_OF_LETTERS]
+
 
 class Comment(models.Model):
     """Модель комментария на произведение."""
@@ -147,16 +145,15 @@ class Comment(models.Model):
         on_delete=models.CASCADE,
         related_name='comments',
         verbose_name='Отзыв',
-        blank=True, null=True,
+        blank=False, null=False,
         help_text='Отзыв, к которому относится комментарий',
-
     )
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='comments',
         verbose_name='Автор',
-        null=True,
+        blank=False, null=False
     )
     text = models.TextField(
         verbose_name='Текст комментария',
@@ -167,9 +164,9 @@ class Comment(models.Model):
         auto_now_add=True,
     )
 
-    def __str__(self) -> str:
-        return self.text[:20]
-
     class Meta:
         verbose_name = 'Комментарий'
         ordering = ['pub_date']
+
+    def __str__(self) -> str:
+        return self.text[:NUM_OF_LETTERS]

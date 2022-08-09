@@ -34,7 +34,8 @@ class APISignUp(APIView):
             )
         except IntegrityError:
             return Response(
-                'Данный пользователь уже зарегестрирован', status=status.HTTP_400_BAD_REQUEST
+                'Данный пользователь уже зарегестрирован',
+                status=status.HTTP_400_BAD_REQUEST
             )
         confirmation_code = default_token_generator.make_token(user)
         send_mail(

@@ -18,7 +18,10 @@ MAX_LENGTH = 200
 class User(AbstractUser):
     """Создает модель пользователя."""
     username = models.CharField(
-        unique=True, max_length=MAX_LENGTH, blank=False, verbose_name='username'
+        unique=True,
+        max_length=MAX_LENGTH,
+        blank=False,
+        verbose_name='username'
     )
     email = models.EmailField('Почта пользователя', unique=True)
     bio = models.TextField('Биография', blank=True)

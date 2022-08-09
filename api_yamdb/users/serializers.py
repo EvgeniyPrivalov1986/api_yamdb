@@ -4,12 +4,15 @@ from rest_framework.validators import UniqueValidator
 from .models import User
 from .validators import validate_username
 
+MAX_LENGTH = 200
 
-class UserSerializer(serializers.ModelSerializer):
-    """Сериализатор для User."""
-    class Meta:
-        model = User
-        fields = '__all__'
+
+class UserSerializer(serializers.Serializer):
+    """Сериализатор для регистрации User."""
+    email = serializers.EmailField()
+    username = serializers.CharField(
+        validators=[validate_username, ]
+    )
 
 
 class ForUserSerializer(serializers.ModelSerializer):
@@ -18,7 +21,7 @@ class ForUserSerializer(serializers.ModelSerializer):
         validators=[UniqueValidator(queryset=User.objects.all())]
     )
     username = serializers.CharField(
-        max_length=200,
+        max_length=MAX_LENGTH,
         required=True,
         validators=[
             validate_username,
@@ -37,9 +40,10 @@ class ForUserSerializer(serializers.ModelSerializer):
 class ForAdminSerializer(serializers.ModelSerializer):
     """Сериализатор для Admin. Зарезервированное имя использовать нельзя."""
     email = serializers.EmailField(
-        validators=[UniqueValidator(queryset=User.objects.all())])
+        validators=[UniqueValidator(queryset=User.objects.all())],
+    )
     username = serializers.CharField(
-        max_length=200,
+        max_length=MAX_LENGTH,
         required=True,
         validators=[
             validate_username,
@@ -57,11 +61,13 @@ class ForAdminSerializer(serializers.ModelSerializer):
 class TokenSerializer(serializers.Serializer):
     """Сериализатор для Token. Зарезервированное имя использовать нельзя."""
     username = serializers.CharField(
-        max_length=200,
+        max_length=MAX_LENGTH,
         required=True,
         validators=[
             validate_username,
             UniqueValidator(queryset=User.objects.all())
         ]
     )
-    confirmation_code = serializers.CharField(max_length=200, required=True)
+    confirmation_code = serializers.CharField(
+        max_length=MAX_LENGTH, required=True
+    )

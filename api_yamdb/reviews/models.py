@@ -99,7 +99,7 @@ class Review(models.Model):
         on_delete=models.CASCADE,
         related_name='reviews',
         verbose_name='Отзыв',
-        blank=False, null=True,
+        blank=False,
         help_text='Произведение, к которому относится комментарий',
     )
     author = models.ForeignKey(
@@ -107,7 +107,7 @@ class Review(models.Model):
         on_delete=models.CASCADE,
         related_name='reviews',
         verbose_name='Автор',
-        blank=False, null=True,
+        blank=False,
     )
     score = models.IntegerField(
         'Оценка',
@@ -138,7 +138,7 @@ class Comment(models.Model):
         on_delete=models.CASCADE,
         related_name='comments',
         verbose_name='Отзыв',
-        blank=False, null=False,
+        blank=False,
         help_text='Отзыв, к которому относится комментарий',
     )
     author = models.ForeignKey(
@@ -146,7 +146,7 @@ class Comment(models.Model):
         on_delete=models.CASCADE,
         related_name='comments',
         verbose_name='Автор',
-        blank=False, null=False
+        blank=False,
     )
     text = models.TextField(
         verbose_name='Текст комментария',

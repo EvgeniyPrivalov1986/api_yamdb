@@ -28,6 +28,10 @@ class User(AbstractUser):
     role = models.CharField(max_length=20, choices=ROLES, default=USER)
     token = models.CharField(max_length=MAX_LENGTH, blank=True)
 
+    class Meta:
+        verbose_name = 'Пользователь'
+        ordering = ['id']
+
     @property
     def is_admin(self):
         return self.is_superuser or self.role == ADMIN
